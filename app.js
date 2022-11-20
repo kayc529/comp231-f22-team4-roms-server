@@ -18,6 +18,13 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
+const fileUpload = require('express-fileupload');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 //routers
 const authRouter = require('./routes/authRoutes');
@@ -39,8 +46,14 @@ app.use(mongoSanitize());
 app.use(express.json());
 app.use(express.static('./public'));
 app.use(cookieParser(process.env.JWT_SECRET));
+app.use(fileUpload({ useTempFiles: true }));
 
 //routes
+app.get('/', (req, res) => {
+  res.send(
+    '<div>Available apis: "/api/v1/auth", "/api/v1/menu", "/api/v1/orders"</div>'
+  );
+});
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/menu', menuRouter);
 app.use('/api/v1/orders', orderRouter);
@@ -51,7 +64,7 @@ app.use(notFoundHandler);
 //error handler
 app.use(errorHandler);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 const start = async () => {
   try {
     await connectDB(process.env.DB_URL);
