@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const orderItemSchema = new mongoose.Schema({
   menuItem: {
-    type: MenuItem,
+    type: mongoose.Types.ObjectId,
+    ref: 'MenuItem',
     require: true,
   },
   quantity: {
