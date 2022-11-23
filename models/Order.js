@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema(
     orderType: {
       type: String,
       enum: ['DINE_IN', 'TAKE_OUT'],
-      default: 'take-out',
+      default: 'TAKE_OUT',
     },
     status: {
       type: String,
