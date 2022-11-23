@@ -2,13 +2,23 @@ const express = require('express');
 const { route } = require('./authRoutes');
 const router = express.Router();
 
+const {
+  getAllOrders,
+  getSingleOrder,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+} = require('../controllers/orderContoller');
+
 //get all orders
-router.get('/');
+router.get('/', getAllOrders);
 //get a single order with orderId
-router.get('/:id');
+router.get('/:id', getSingleOrder);
 //create a new order
-router.post('/');
+router.post('/', createOrder);
 //update an existing order
-router.patch('/:id');
+router.patch('/:id', updateOrder);
+//delete an existing order
+router.delete('/:id', deleteOrder);
 
 module.exports = router;
