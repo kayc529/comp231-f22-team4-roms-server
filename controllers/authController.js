@@ -1,10 +1,10 @@
 const Staff = require('../models/Staff');
 const { StatusCodes } = require('http-status-codes');
 const passport = require('passport');
-
-const ProcessSignInPage = (req, res) =>
+const GenerateToken  = require('../Util');
+const ProcessSignInPage = (req, res, next) =>
 {
-    passport.authenticate('local', function(err, user, info)
+    passport.authenticate('local', function(err, staff, info)
     {
         if(err)
         {
@@ -12,12 +12,12 @@ const ProcessSignInPage = (req, res) =>
             res.end(err);
         }
 
-        if(!user)
+        if(!staff)
         {
             return res.json({success: false, message: 'ERROR: Authentication Failed'});
         }
 
-        req.logIn(user, function(err)
+        req.logIn(staff, function(err)
         {
             if(err)
             {
@@ -25,13 +25,11 @@ const ProcessSignInPage = (req, res) =>
                 res.end(err);
             }
 
-            const authToken = GenerateToken(user);
+            const authToken = GenerateToken.GenerateToken(staff);
 
             return res.json({success: true, message: 'Staff Logged In Successfully', staff:
                 {
                     id: staff._id,
-                    firstname: staff.firstname,
-                    lastname: staff.lastname,
                     username: staff.username
                 }, token: authToken
             })
@@ -51,8 +49,8 @@ const ProcessSignUpPage = (req, res) =>
         password: req.body.password,
         role: req.body.role
     });
-    console.log(newStaff)
-    Staff.register(newStaff, req.body.password, function(err)
+
+    Staff.register(newStaff, req.body.password, function (err)
     {
         if(err)
         {
@@ -87,16 +85,8 @@ const ProcessSignOutPage = (req, res) =>
    res.json({success: true, message: "User Logged Out Successfully!"});
 }
 
-const getAllStaffs = async (req, res) => {
-  const staffs = await Staff.find({});
-  res
-    .status(StatusCodes.OK)
-    .json({ success: true, staffs: staffs, count: staffs.length });
-};
-
 module.exports = {
     ProcessSignInPage,
     ProcessSignUpPage,
-    ProcessSignOutPage,
-    getAllStaffs
+    ProcessSignOutPage
 };

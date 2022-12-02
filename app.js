@@ -95,6 +95,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/menu', menuRouter);
 app.use('/api/v1/orders', orderRouter);
 
+
 //HANDLERS MUST BE PLACED AFTER THE ROUTES
 //not found handler
 app.use(notFoundHandler);

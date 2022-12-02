@@ -5,7 +5,6 @@ const {
   ProcessSignInPage,
   ProcessSignUpPage,
   ProcessSignOutPage,
-  getAllStaffs
 } = require('../controllers/authController');
 
 router.post('/signin', ProcessSignInPage);
