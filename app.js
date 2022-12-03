@@ -35,6 +35,7 @@ const flash  = require('connect-flash');
 const authRouter = require('./routes/authRoutes');
 const menuRouter = require('./routes/menuRoutes');
 const orderRouter = require('./routes/orderRoutes');
+const staffRouter = require('./routes/staffRoutes');
 
 //middlewares(just some useful 3rd party packages)
 app.set('trust proxy', 1);
@@ -94,6 +95,7 @@ app.get('/', (req, res) => {
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/menu', menuRouter);
 app.use('/api/v1/orders', orderRouter);
+app.use('/api/v1/staffs', staffRouter);
 
 
 //HANDLERS MUST BE PLACED AFTER THE ROUTES
