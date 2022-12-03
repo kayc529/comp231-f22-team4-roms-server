@@ -9,7 +9,7 @@ const {
 } = require('../controllers/staffController');
 
 router.get('/', getAllStaffs);
-router.get('/:id', getStaff);
+router.get('/edit/:id', getStaff);
 router.post('/add', addStaff);
 router.patch('/edit/:id', updateStaff);
 router.delete('/delete/:id', deleteStaff);

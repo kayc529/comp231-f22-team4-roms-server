@@ -29,24 +29,26 @@ const addStaff = async (req, res) => {
 
 const updateStaff = async (req, res) => {
   const { id } = req.params;
-  const staff = await Staff.findOne({ _id: id });
+  
+  let updatedStaff = new Staff
+  ({
+    _id: id,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    username: req.body.username,
+    password: req.body.password,
+    role: req.body.role,
+  });
 
-  if (!staff) {
-    throw CustomError.NotFoundError(`No staff with id ${id} found`);
-  }
-
-  const staffToUpdate = req.body;
-  const updatedStaff = await Staff.findOneAndUpdate(
+  Staff.updateOne({ _id: id, }, updatedStaff, function (err)
+  {
+    if(err)
     {
-      _id: id,
-    },
-    staffToUpdate,
-    {
-      new: true,
+      console.error(err);
+      res.end(err);
     }
-  );
-
-  res.status(StatusCodes.OK).json({ success: true, staff: updatedStaff });
+    res.status(StatusCodes.OK).json({ success: true, staff: updatedStaff });
+  })
 };
 
 const deleteStaff = async (req, res) => {
