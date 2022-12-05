@@ -1,17 +1,13 @@
 const Staff = require('../models/Staff');
 const { StatusCodes } = require('http-status-codes');
 const passport = require('passport');
-const GenerateToken  = require('../Util');
+const GenerateToken = require('../Util');
+const BadRequestError = require('../errors');
+
 const ProcessSignInPage = (req, res, next) =>
 {
     passport.authenticate('local', function(err, staff, info)
     {
-        if(err)
-        {
-            console.error(err);
-            res.end(err);
-        }
-
         if(!staff)
         {
             return res.json({success: false, message: 'ERROR: Authentication Failed'});
@@ -19,12 +15,6 @@ const ProcessSignInPage = (req, res, next) =>
 
         req.logIn(staff, function(err)
         {
-            if(err)
-            {
-                console.error(err);
-                res.end(err);
-            }
-
             const authToken = GenerateToken.GenerateToken(staff);
 
             return res.json({success: true, message: 'Staff Logged In Successfully', staff:
@@ -75,8 +65,7 @@ const ProcessSignOutPage = (req, res) =>
     {
         if(err)
         {
-            console.error(err);
-            res.end(err);
+            throw new BadRequestError.BadRequestError('Server Error!');
         }
 
         console.log('User Logged Out');
