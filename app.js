@@ -71,7 +71,7 @@ passport.deserializeUser(Staff.deserializeUser());
 let jwtOptions =
 {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'Some Secret'
+  secretOrKey: process.env.JWT_SECRET
 }
 
 let strategy = new JWTStrategy(jwtOptions, function(jwt_payload, done)

@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
+const Unauthorized = require('../errors');
 
 function AuthGuard(req, res, next)
 {
     if(!req.isAuthenticated())
     {
-        return res.redirect('/login');
+        throw new Unauthorized.UnauthorizedError('Please login first!');
     }
     next();
 }
@@ -14,6 +15,7 @@ function GenerateToken(staff) {
     {
         id: staff._id,
         username: staff.username,
+        role: staff.role
     }
 
     const jwtOptions =
