@@ -20,7 +20,8 @@ const ProcessSignInPage = (req, res, next) =>
             return res.json({success: true, message: 'Staff Logged In Successfully', staff:
                 {
                     id: staff._id,
-                    username: staff.username
+                    username: staff.username,
+                    role: staff.role
                 }, token: authToken
             })
         });
