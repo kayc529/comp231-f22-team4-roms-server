@@ -17,6 +17,14 @@ const menuItemSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  isDineIn: {
+    type: Boolean,
+    default: true,
+  },
+  isTakeOut: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = mongoose.model('MenuItem', menuItemSchema);

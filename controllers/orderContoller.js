@@ -40,10 +40,14 @@ const createOrder = async (req, res) => {
 
   //2. create order items using the new order id
   let itemsWithOrderId = items.map((item) => {
-    console.log(item);
-    return { ...item, orderId: newOrder._id };
+    //console.log(item);
+    return {
+        menuItem: item,
+        quantity: item.count,
+        orderId: newOrder._id
+    };
   });
-
+  console.log(itemsWithOrderId);
   await OrderItem.insertMany(itemsWithOrderId);
 
   res.status(StatusCodes.CREATED).json({ success: true, newOrder });
