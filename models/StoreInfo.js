@@ -9,9 +9,6 @@ const storeInfoSchema = new mongoose.Schema({
   openHour: {
     type: String,
   },
-  closeHour: {
-    type: String,
-  },
   telephone: {
     type: String,
   },
@@ -20,6 +17,9 @@ const storeInfoSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+  },
+  isOpen: {
+    type: Boolean,
   },
 });
 

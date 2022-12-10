@@ -28,14 +28,15 @@ cloudinary.config({
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('passport-local');
-const passportJWT  = require('passport-jwt');
-const flash  = require('connect-flash');
+const passportJWT = require('passport-jwt');
+const flash = require('connect-flash');
 
 //routers
 const authRouter = require('./routes/authRoutes');
 const menuRouter = require('./routes/menuRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const staffRouter = require('./routes/staffRoutes');
+const settingRouter = require('./routes/settingRoute');
 
 //middlewares(just some useful 3rd party packages)
 app.set('trust proxy', 1);
@@ -53,11 +54,13 @@ app.use(express.json());
 app.use(express.static('./public'));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(fileUpload({ useTempFiles: true }));
-const Staff = require('./models/Staff')
-app.use(session({
-  saveUninitialized: false,
-  resave: false
-}));
+const Staff = require('./models/Staff');
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+  })
+);
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -68,21 +71,19 @@ let ExtractJWT = passportJWT.ExtractJwt;
 let localStrategy = passportLocal.Strategy;
 passport.serializeUser(Staff.serializeUser());
 passport.deserializeUser(Staff.deserializeUser());
-let jwtOptions =
-{
+let jwtOptions = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET
-}
+  secretOrKey: process.env.JWT_SECRET,
+};
 
-let strategy = new JWTStrategy(jwtOptions, function(jwt_payload, done)
-{
+let strategy = new JWTStrategy(jwtOptions, function (jwt_payload, done) {
   User.findById(jwt_payload.id)
-  .then(user => {
-    return done(null, user);
-  })
-  .catch(err => {
-    return done(err, false);
-  });
+    .then((user) => {
+      return done(null, user);
+    })
+    .catch((err) => {
+      return done(err, false);
+    });
 });
 passport.use(strategy);
 
@@ -96,7 +97,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/menu', menuRouter);
 app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/staffs', staffRouter);
-
+app.use('/api/v1/setting', settingRouter);
 
 //HANDLERS MUST BE PLACED AFTER THE ROUTES
 //not found handler
