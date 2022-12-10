@@ -29,8 +29,9 @@ const createOrder = async (req, res) => {
   //1. create order
   const refNumber = Math.floor(Date.now() / 1000).toString(16);
 
-  let orderObj = { referenceNumber: refNumber };
+  let orderObj = { referenceNumber: refNumber, orderType: orderType };
   if (orderType === 'DINE_IN') {
+    console.log(orderObj)
     orderObj = { ...orderObj, reserveTime };
   } else {
     orderObj = { ...orderObj, pickupTime };
