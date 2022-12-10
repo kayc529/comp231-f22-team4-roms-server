@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Unauthorized = require('../errors');
 
-function AuthGuard(req, res, next)
+function AuthGuard(req, next)
 {
     if(!req.isAuthenticated())
     {
