@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose= require('passport-local-mongoose');
 const staffSchema = new mongoose.Schema({
-  staffId: {
+  username: {
     type: String,
     require: true,
   },
@@ -21,5 +22,7 @@ const staffSchema = new mongoose.Schema({
     require: true,
   },
 });
+
+staffSchema.plugin(passportLocalMongoose)
 
 module.exports = mongoose.model('Staff', staffSchema);
