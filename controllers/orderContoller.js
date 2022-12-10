@@ -29,7 +29,7 @@ const createOrder = async (req, res) => {
   //1. create order
   const refNumber = Math.floor(Date.now() / 1000).toString(16);
 
-  let orderObj = { referenceNumber: refNumber };
+  let orderObj = { referenceNumber: refNumber, orderType: orderType };
   if (orderType === 'DINE_IN') {
     orderObj = { ...orderObj, reserveTime };
   } else {
@@ -39,12 +39,12 @@ const createOrder = async (req, res) => {
   const newOrder = await Order.create(orderObj);
 
   //2. create order items using the new order id
-  let itemsWithOrderId = items.map((item) => {
-    console.log(item);
-    return { ...item, orderId: newOrder._id };
-  });
+  // let itemsWithOrderId = items.map((item) => {
+  //   console.log(item);
+  //   return { ...item, orderId: newOrder._id };
+  // });
 
-  await OrderItem.insertMany(itemsWithOrderId);
+  // await OrderItem.insertMany(itemsWithOrderId);
 
   res.status(StatusCodes.CREATED).json({ success: true, newOrder });
 };
