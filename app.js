@@ -30,6 +30,7 @@ const passport = require('passport');
 const passportLocal = require('passport-local');
 const passportJWT = require('passport-jwt');
 const flash = require('connect-flash');
+const bodyParser = require('body-parser');
 
 //routers
 const authRouter = require('./routes/authRoutes');
@@ -50,7 +51,12 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 app.use(mongoSanitize());
+
+//for upload image big file size
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.json());
+
 app.use(express.static('./public'));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(fileUpload({ useTempFiles: true }));

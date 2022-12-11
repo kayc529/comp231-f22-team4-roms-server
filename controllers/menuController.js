@@ -76,7 +76,7 @@ const deleteMenuItem = async (req, res) => {
 
 const uploadMenuItemImage = async (req, res) => {
   const { id } = req.params;
-  const imageFile = req.body;
+  const { image } = req.body;
 
   //find existing menu item
   const menuItem = await MenuItem.findOne({ _id: id });
@@ -85,13 +85,14 @@ const uploadMenuItemImage = async (req, res) => {
   }
 
   //upload image to cloud
-  const result = await cloudinary.uploader.upload(imageFile, {
+  const result = await cloudinary.uploader.upload(image, {
     use_filename: true,
     folder: 'file-upload',
   });
 
   //if upload image failed
   if (!result.secure_url) {
+    console.log('here');
     throw new CustomError.CustomAPIError('Failed to upload image!');
   }
 
