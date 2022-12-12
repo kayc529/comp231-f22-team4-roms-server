@@ -40,6 +40,12 @@ const updateStaff = async (req, res) => {
     role: req.body.role,
   });
 
+  Staff.findByUsername(req.body.username).then(function (staff) {
+    if (staff) {
+      staff.changePassword(staff.password, req.body.password)
+    }
+  })
+
   Staff.updateOne({ _id: id, }, updatedStaff, function (err)
   {
     if(err)
